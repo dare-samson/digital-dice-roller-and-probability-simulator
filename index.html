@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f4ef">
+    <meta name="description" content="Roll virtual dice and explore how experimental results compare with theoretical probability.">
+    <title>Digital Dice Lab | Dice Roller & Probability Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Digital Dice Lab home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>DIGITAL DICE <span class="brand-light">LAB</span></span>
+        </a>
+        <div class="student-tag"><span class="status-dot"></span> A probability playground</div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <div class="intro-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> LEARN BY ROLLING</p>
+            <h1 id="page-title">A little chance.<br><span>A lot to discover.</span></h1>
+            <p class="intro-description">Roll the dice, run an experiment, and see probability take shape. What happens in theory—and what happens when you try it?</p>
+          </div>
+          <div class="hero-die" aria-hidden="true">
+            <div class="die-face">
+              <i class="pip pip-one"></i><i class="pip pip-two"></i><i class="pip pip-three"></i>
+              <i class="pip pip-four"></i><i class="pip pip-five"></i><i class="pip pip-six"></i>
+              <i class="pip pip-seven"></i><i class="pip pip-eight"></i><i class="pip pip-nine"></i>
+            </div>
+            <span class="hero-spark spark-one">✳</span>
+            <span class="hero-spark spark-two">+</span>
+          </div>
+        </section>
+
+        <section class="workspace" aria-label="Dice roller and probability simulator">
+          <div class="panel controls-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">01 / SET UP</p>
+                <h2>Choose your dice</h2>
+              </div>
+              <span class="step-number">01</span>
+            </div>
+            <form id="settings-form">
+              <div class="field-grid">
+                <label class="field" for="dice-count">
+                  <span class="field-label">Number of dice</span>
+                  <span class="input-wrap"><input id="dice-count" name="dice-count" type="number" min="1" max="6" value="2" required><span class="input-suffix">DICE</span></span>
+                  <span class="field-hint">Choose between 1 and 6</span>
+                </label>
+                <label class="field" for="side-count">
+                  <span class="field-label">Sides per die</span>
+                  <span class="input-wrap"><input id="side-count" name="side-count" type="number" min="2" max="20" value="6" required><span class="input-suffix">SIDES</span></span>
+                  <span class="field-hint">Choose between 2 and 20</span>
+                </label>
+              </div>
+
+              <div class="roll-area">
+                <div class="roll-heading">
+                  <span class="field-label">Your roll</span>
+                  <span class="roll-caption">Ready when you are</span>
+                </div>
+                <div id="roll-results" class="roll-results" aria-live="polite" aria-label="Your dice results">
+                  <span class="empty-die" aria-hidden="true">?</span>
+                  <span class="empty-die" aria-hidden="true">?</span>
+                </div>
+                <div class="roll-total"><span>SUM OF THE ROLL</span><strong id="roll-total">—</strong></div>
+                <button class="button button-dark" id="roll-button" type="button">
+                  <span class="button-icon" aria-hidden="true">↻</span> Roll the dice
+                </button>
+              </div>
+
+              <div class="divider"><span>THEN RUN AN EXPERIMENT</span></div>
+
+              <label class="field simulation-field" for="simulation-count">
+                <span class="field-label">Number of simulations</span>
+                <span class="input-wrap"><input id="simulation-count" name="simulation-count" type="number" min="100" max="100000" step="100" value="10000" required><span class="input-suffix">ROLLS</span></span>
+                <span class="field-hint">From 100 to 100,000 rolls</span>
+              </label>
+              <button class="button button-lime" id="simulate-button" type="submit">
+                Simulate probability <span class="button-arrow" aria-hidden="true">↗</span>
+              </button>
+            </form>
+            <p class="privacy-note"><span aria-hidden="true">✦</span> All experiments run right here in your browser.</p>
+          </div>
+
+          <div class="panel results-panel">
+            <div class="section-heading results-heading">
+              <div>
+                <p class="eyebrow">02 / YOUR RESULTS</p>
+                <h2>Watch chance unfold</h2>
+              </div>
+              <span class="live-pill"><span class="status-dot"></span> LIVE</span>
+            </div>
+
+            <div id="empty-state" class="empty-state">
+              <div class="empty-illustration" aria-hidden="true">
+                <span class="mini-die mini-die-one">⚄</span>
+                <span class="mini-die mini-die-two">⚂</span>
+                <span class="illustration-star">✳</span>
+              </div>
+              <h3>Your results will land here.</h3>
+              <p>Set your dice, then run a simulation to compare what you observed with the theory.</p>
+            </div>
+
+            <div id="results-content" class="results-content" hidden aria-live="polite">
+              <div class="stats-grid">
+                <article class="stat-card">
+                  <span class="stat-label">EXPERIMENTAL MEAN</span>
+                  <strong id="observed-mean" class="stat-value">—</strong>
+                  <span id="mean-comparison" class="stat-note">Average of your rolls</span>
+                </article>
+                <article class="stat-card stat-card-lilac">
+                  <span class="stat-label">THEORETICAL MEAN</span>
+                  <strong id="theoretical-mean" class="stat-value">—</strong>
+                  <span class="stat-note">Expected average</span>
+                </article>
+                <article class="stat-card stat-card-peach">
+                  <span class="stat-label">MOST LIKELY SUM</span>
+                  <strong id="likely-sum" class="stat-value">—</strong>
+                  <span id="likely-probability" class="stat-note">—</span>
+                </article>
+              </div>
+
+              <div class="chart-heading">
+                <div>
+                  <h3>Sum distribution</h3>
+                  <p id="chart-subtitle">Observed vs. theoretical probability</p>
+                </div>
+                <div class="chart-legend">
+                  <span><i class="legend-swatch observed-swatch"></i> Observed</span>
+                  <span><i class="legend-swatch expected-swatch"></i> Theory</span>
+                </div>
+              </div>
+              <div id="chart-scroll" class="chart-scroll">
+                <div id="distribution-chart" class="distribution-chart" role="img" aria-label="Simulation chart comparing observed and theoretical probabilities"></div>
+              </div>
+              <div class="chart-axis"><span>SUM</span><span>PROBABILITY</span></div>
+              <p id="simulation-summary" class="simulation-summary"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="how-it-works" aria-label="How the simulator works">
+          <div class="how-icon" aria-hidden="true">∑</div>
+          <p><strong>A quick note on probability.</strong> The theoretical distribution is calculated from all possible dice combinations. The observed distribution comes from your simulated rolls—run more trials to see how closely they line up.</p>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <a class="brand footer-brand" href="#" aria-label="Digital Dice Lab home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>DIGITAL DICE <span class="brand-light">LAB</span></span>
+        </a>
+        <p>Made for curious minds.</p>
+        <p class="student-credit">DARE SAMSON <span>·</span> 2025/HND/SWD/88</p>
+      </footer>
+    </div>
+  </body>
+</html>
